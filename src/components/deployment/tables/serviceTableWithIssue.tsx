@@ -1,7 +1,8 @@
 
 import React from 'react';
-import DeploymentList from './deployments/listDeployments';
+
 import { deploymentHavingIssue, filterDeployments } from '@/functions';
+import DeploymentList from './listDeployments';
 
 const ServiceTableWithIssue = (props: any) => {
   const { deployments } = props;

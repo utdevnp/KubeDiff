@@ -1,7 +1,7 @@
 
 import React from 'react';
-import DeploymentList from './deployments/listDeployments';
 import { filterDeployments } from '@/functions';
+import DeploymentList from './listDeployments';
 
 const ServiceTable = (props: any) => {
   const { deployments, type } = props;

@@ -1,5 +1,6 @@
-import { Deployment } from "@/pages/api/deploy";
-import { DEFAULT_IGNORED_NAME, DEFAULT_NAMESPACE } from "@/setting";
+
+import { DEFAULT_IGNORED_NAME, DEFAULT_NAMESPACE, workLoads } from "@/setting";
+import { Deployment } from "@/types";
 
 export const filterDeployments = (deployments: Deployment[], filter: string = DEFAULT_NAMESPACE) => {
     return deployments.filter(deployment => deployment.namespace == filter && deployment.name != DEFAULT_IGNORED_NAME);
@@ -83,4 +84,8 @@ export const findDifferentNamesInList = (list: any[]) => {
     const diffInArr2 = filteredArr2.filter((item: { name: any; }) => !filteredArr1.some((e: { name: any; }) => e.name === item.name));
   
     return [diffInArr1, diffInArr2];
+  }
+
+  export const findName = ( workload: any) => {
+    return workLoads.find((item: { value: any; }) => item.value == workload)?.name;
   }
