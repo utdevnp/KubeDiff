@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.loader {
+  @apply animate-spin h-4 w-4 border-t-2 border-blue-500 border-solid rounded-full;
+}
