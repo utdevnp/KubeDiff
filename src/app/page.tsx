@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { workLoads } from "@/setting";
 import DeploymentTab from "@/components/deployment/main";
 import ConfigMapTab from "@/components/configmap";
+import { getWorkLoadData, saveWorkLoadData } from "@/functions/localstorage";
 
 const tabs = ["Deployments", "Config Map", "Key Vault"];
 
@@ -14,11 +15,13 @@ export default function Home() {
 
   const setWorkLoadValueOne = (e: any) => {
     setWorkLoadOne(e.target.value);
+    saveWorkLoadData("workLoadOne", e.target.value);
     setLoading(true);
   }
 
   const setWorkLoadValueTwo = (e: any) => {
     setWorkLoadTwo(e.target.value);
+    saveWorkLoadData("workLoadTwo", e.target.value);
     setLoading(true);
   }
 
@@ -30,6 +33,10 @@ export default function Home() {
     setLoading(false);
   }
 
+  useEffect(() => {
+    setWorkLoadOne(getWorkLoadData('workLoadOne'));
+    setWorkLoadTwo(getWorkLoadData('workLoadTwo'));
+  }, []);
   return (
     <div className="grid">
       <main className="flex flex-col gap-1 p-2 row-start-2 items-center sm:items-start">
@@ -48,17 +55,21 @@ export default function Home() {
             <option value="">Choose workload </option>
             {
               workLoads.map((deployment, index) => (
-                <option value={deployment.value} defaultValue={deployment.value} key={index}>{deployment.name}</option>
+                <option value={deployment.value} defaultValue={workLoadTwo} key={index}>{deployment.name}</option>
               ))
             }
           </select>
 
-          <div>  <button
-            onClick={refreshData}
-            className="cursor-pointer border-none bg-green-200 text-gray-800 px-4 py-2 rounded-sm hover:bg-green-600 hover:text-white transition"
-          >
-            {loading ? "Loading..." : "Refresh"}
-          </button></div>
+          <div>
+            {
+              workLoadOne || workLoadTwo ? <button
+                onClick={refreshData}
+                className="cursor-pointer border-none bg-green-200 text-gray-800 px-4 py-2 rounded-sm hover:bg-green-600 hover:text-white transition"
+              >
+                {loading ? "Loading..." : "Refresh"}
+              </button> : ""
+            }
+          </div>
         </div>
 
         <div className="w-full p-4">
@@ -77,7 +88,7 @@ export default function Home() {
 
           <div className="mt-4 tab body">
             {activeTab === "Deployments" && <DeploymentTab workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} loading={loading} closeLoading={closeLoading} />}
-            {activeTab === "Config Map" && <ConfigMapTab/>}
+            {activeTab === "Config Map" && <ConfigMapTab />}
             {activeTab === "Key Vault" && <p>📜 Key vaults</p>}
           </div>
         </div>

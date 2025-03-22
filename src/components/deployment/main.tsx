@@ -46,7 +46,7 @@ const DeploymentTab = (props: any) => {
 
   return (
     <div className="flex flex-row p-2 gap-8">
-      {!workLoadOne && !workLoadTwo ?
+      {!workLoadOne && !workLoadTwo && !deployments ?
         <div className="text-red-500 p-2 gap-2">Please select at least one workloads</div> : ""}
       {
         deployments?.map((deployment, index) => (
