@@ -4,4 +4,6 @@ export interface Deployment {
     replicas: number;
     available: number;
     configMaps: any;
+    isConfigMapOpen: boolean;
+    setCurrentView: boolean;
   }

@@ -96,6 +96,8 @@ async function getDeployments(context: string, loadConfig: boolean): Promise<Dep
         replicas,
         available,
         configMaps,
+        isConfigMapOpen: false,
+        setCurrentView: false
       });
     }
 

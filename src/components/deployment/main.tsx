@@ -18,27 +18,32 @@ const DeploymentTab = (props: any) => {
       props.workLoadOne ? `workload1=${props.workLoadOne}` : '',
       props.workLoadTwo ? `workload2=${props.workLoadTwo}` : ''
     ].filter(Boolean).join('&');
+    try {
+      const response = await httpRequest.get(`/api/deploy?${queryString}`);
+      saveDeploymentsData(response.data);
+      setData(response.data);
+      setDataDiff(findDifferentNamesInList(response.data as unknown as any));
 
-    const response = await httpRequest.get(`/api/deploy?${queryString}`);
-    saveDeploymentsData(response.data);
-    setData(response.data);
-    setDataDiff(findDifferentNamesInList(response.data as unknown as any));
-
-    if (response && response.data && response.data.length > 0) {
+      if (response && response.data && response.data.length > 0) {
+        props.closeLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching deployments:', error);
       props.closeLoading(false);
     }
+
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     setData(getDeploymentsData());
     props.closeLoading(false);
   }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (workLoadOne || workLoadTwo) {
       getDeployments(props);
     }
-    
+
   }, [loading]);
 
 

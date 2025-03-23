@@ -11,7 +11,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [workLoadOne, setWorkLoadOne] = useState<string>('');
   const [workLoadTwo, setWorkLoadTwo] = useState<string>('');
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [activeTab, setActiveTab] = useState(tabs[1]);
 
   const setWorkLoadValueOne = (e: any) => {
     setWorkLoadOne(e.target.value);
@@ -88,7 +88,7 @@ export default function Home() {
 
           <div className="mt-4 tab body">
             {activeTab === "Deployments" && <DeploymentTab workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} loading={loading} closeLoading={closeLoading} />}
-            {activeTab === "Config Map" && <ConfigMapTab />}
+            {activeTab === "Config Map" && <ConfigMapTab loading={loading} closeLoading={closeLoading}  workLoadOne={workLoadOne} workLoadTwo={workLoadTwo}/>}
             {activeTab === "Key Vault" && <p>📜 Key vaults</p>}
           </div>
         </div>
