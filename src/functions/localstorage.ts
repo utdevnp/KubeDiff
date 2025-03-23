@@ -18,6 +18,15 @@ export const getConfigData = () => {
     return deployments ? JSON.parse(deployments) : [];
 }
 
+export const saveKvData = (kv: any) => {
+    localStorage.setItem('kv892', btoa(JSON.stringify(kv)));
+}
+
+export const getKvData = () => {
+    const deployments = localStorage.getItem('kv892');
+    return deployments ? JSON.parse(atob(deployments)) : [];
+}
+
 export const saveWorkLoadData = (workload: string, value: string) => {
     localStorage.setItem(workload, JSON.stringify(value));
 }

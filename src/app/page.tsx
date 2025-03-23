@@ -4,6 +4,7 @@ import { workLoads } from "@/setting";
 import DeploymentTab from "@/components/deployment/main";
 import ConfigMapTab from "@/components/configmap";
 import { getWorkLoadData, saveWorkLoadData } from "@/functions/localstorage";
+import KeyVaultTab from "@/components/keyvault";
 
 const tabs = ["Deployments", "Config Map", "Key Vault"];
 
@@ -11,7 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [workLoadOne, setWorkLoadOne] = useState<string>('');
   const [workLoadTwo, setWorkLoadTwo] = useState<string>('');
-  const [activeTab, setActiveTab] = useState(tabs[1]);
+  const [activeTab, setActiveTab] = useState(tabs[0]);
 
   const setWorkLoadValueOne = (e: any) => {
     setWorkLoadOne(e.target.value);
@@ -89,7 +90,7 @@ export default function Home() {
           <div className="mt-4 tab body">
             {activeTab === "Deployments" && <DeploymentTab workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} loading={loading} closeLoading={closeLoading} />}
             {activeTab === "Config Map" && <ConfigMapTab loading={loading} closeLoading={closeLoading}  workLoadOne={workLoadOne} workLoadTwo={workLoadTwo}/>}
-            {activeTab === "Key Vault" && <p>📜 Key vaults</p>}
+            {activeTab === "Key Vault" && <KeyVaultTab/>}
           </div>
         </div>
       </main>

@@ -3,32 +3,6 @@ import { KubeConfig, AppsV1Api, CoreV1Api, CoreV1ApiReadNamespacedConfigMapReque
 import { DEFAULT_NAMESPACE } from '@/setting';
 import { Deployment } from '@/types';
 
-const extractConfigMaps = (podSpec: any): string[] => {
-  const configMaps = new Set<string>();
-
-  const containers = podSpec?.containers || [];
-  containers.forEach((container: { env?: any; envFrom?: any }) => {
-    (container.env || []).forEach((env: { valueFrom?: { configMapKeyRef?: { name: string } } }) => {
-      if (env.valueFrom?.configMapKeyRef?.name) {
-        configMaps.add(env.valueFrom.configMapKeyRef.name);
-      }
-    });
-    (container.envFrom || []).forEach((envFrom: { configMapRef?: { name: string } }) => {
-      if (envFrom.configMapRef?.name) {
-        configMaps.add(envFrom.configMapRef.name);
-      }
-    });
-  });
-
-  (podSpec?.volumes || []).forEach((volume: { configMap?: { name: string } }) => {
-    if (volume.configMap?.name) {
-      configMaps.add(volume.configMap.name);
-    }
-  });
-
-  return Array.from(configMaps);
-};
-
 async function getConfigMapData(apiClient: CoreV1Api, namespace: string, configMapName: string) {
 
       try {

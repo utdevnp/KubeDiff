@@ -89,3 +89,7 @@ export const findDifferentNamesInList = (list: any[]) => {
   export const findName = ( workload: any) => {
     return workLoads.find((item: { value: any; }) => item.value == workload)?.name;
   }
+
+  export const findKv = ( workload: any) => {
+    return workLoads.find((item: { value: any; }) => item.value == workload)?.name;
+  }

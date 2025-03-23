@@ -1,8 +1,5 @@
-import { getDeploymentStatus } from "@/functions";
 
 const ConfigMapDeploymentList = ({ deployment, index }: { deployment: any, index: number }) => {
-
-    console.log("deploymentcmap", deployment)
     return (
         <>
             <tr>

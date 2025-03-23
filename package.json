@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/identity": "^4.8.0",
+    "@azure/keyvault-secrets": "^4.9.0",
     "@kubernetes/client-node": "^1.1.0",
     "axios": "^1.8.4",
     "bootstrap": "5.3.3",
