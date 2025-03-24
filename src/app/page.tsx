@@ -88,9 +88,9 @@ export default function Home() {
           </div>
 
           <div className="mt-4 tab body">
-            {activeTab === "Deployments" && <DeploymentTab workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} loading={loading} closeLoading={closeLoading} />}
-            {activeTab === "Config Map" && <ConfigMapTab loading={loading} closeLoading={closeLoading}  workLoadOne={workLoadOne} workLoadTwo={workLoadTwo}/>}
-            {activeTab === "Key Vault" && <KeyVaultTab/>}
+            {activeTab === "Deployments" && <DeploymentTab workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} loading={loading} closeLoading={closeLoading} activeTab={activeTab} />}
+            {activeTab === "Config Map" && <ConfigMapTab loading={loading} closeLoading={closeLoading}  workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} activeTab={activeTab}/>}
+            {activeTab === "Key Vault" && <KeyVaultTab loading={loading} closeLoading={closeLoading} workLoadOne={workLoadOne} workLoadTwo={workLoadTwo} activeTab={activeTab}/>}
           </div>
         </div>
       </main>

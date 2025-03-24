@@ -1,21 +1,69 @@
 import { useEffect, useState } from "react";
-import { getDeploymentsData } from "@/functions/localstorage";
+import { getConfigData, getDeploymentsData, saveConfigData } from "@/functions/localstorage";
 import { findName } from "@/functions";
 import CountTable from "./tables/countInfo";
 import ConfigMapDeployments from "./tables/deployments";
+import httpRequest from "axios";
 
 const ConfigMapTab = (props: any) => {
-    const { workLoadOne, workLoadTwo, loading } = props;
+    const { workLoadOne, workLoadTwo, loading, activeTab } = props;
     const [configMapData, setConfigMapData] = useState<any>([]);
-    const [deploymentsDiff, setDeploymentsDiff] = useState<any>(null);
+    const [error, setError] = useState("");
+    const getDeployments = async (props: any) => {
+        let queryString = [
+            props.workLoadOne ? `workload1=${props.workLoadOne}` : '',
+            props.workLoadTwo ? `workload2=${props.workLoadTwo}` : ''
+        ].filter(Boolean).join('&');
+        try {
+            const response = await httpRequest.get(`/api/deploy?${queryString}&loadConfig=true`);
+            if (response && response.data.length) {
+                saveConfigData(response.data);
+                setConfigMapData(response.data);
+            }
+
+            if (response && response.data && response.data.length > 0) {
+                props.closeLoading(false);
+            }
+        } catch (error: any) {
+            setError(error.message);
+            props.closeLoading(false);
+        }
+
+    };
+
+    const updateDataWithIndex = (index: number, value: boolean, isOpenFlag: boolean = true) => {
+        const confData = getConfigData();
+
+        for (let i = 0; i < confData.length; i++) {
+            if (isOpenFlag) {
+                confData[i][index].isConfigMapOpen = value
+            } else {
+                confData[i][index].setCurrentView = value
+            }
+        }
+
+        saveConfigData(confData);
+        getConfigFromLocal();
+    }
+
+    const getConfigFromLocal = () => {
+        setConfigMapData(getConfigData());
+    }
+
     useEffect(() => {
-        setConfigMapData(getDeploymentsData());
+        getConfigFromLocal();
+
+        if (loading && activeTab == "Config Map") {
+            getDeployments(props);
+        }
         props.closeLoading(false);
-    }, []);
+    }, [props]);
 
 
     return (
-        <div className="flex flex-row p-2 gap-8">
+        <div>
+            <div> {error ? error : ""}</div>
+            <div className="flex flex-row p-2 gap-8">
             {
                 configMapData?.map((deployment: any, index: number) => (
 
@@ -26,12 +74,14 @@ const ConfigMapTab = (props: any) => {
                         </h3>
                         <div className="flex flex-col gap-2">
                             <CountTable deployments={deployment} />
-                            <ConfigMapDeployments deployments={deployment} title="Services" />
+                            <ConfigMapDeployments deployments={deployment} updateDataWithIndex={updateDataWithIndex} title="Services" />
                         </div>
                     </div>
                 ))
             }
         </div>
+        </div>
+       
     );
 };
 

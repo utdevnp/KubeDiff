@@ -1,5 +1,5 @@
 
-import { DEFAULT_IGNORED_NAME, DEFAULT_NAMESPACE, workLoads } from "@/setting";
+import { DEFAULT_IGNORED_NAME, DEFAULT_NAMESPACE, keyVaults, workLoads } from "@/setting";
 import { Deployment } from "@/types";
 
 export const filterDeployments = (deployments: Deployment[], filter: string = DEFAULT_NAMESPACE) => {
@@ -91,5 +91,6 @@ export const findDifferentNamesInList = (list: any[]) => {
   }
 
   export const findKv = ( workload: any) => {
-    return workLoads.find((item: { value: any; }) => item.value == workload)?.name;
+    return keyVaults.find((item: { value: any; }) => item.value == workload)?.name;
   }
+

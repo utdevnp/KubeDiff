@@ -4,7 +4,7 @@ import { filterDeployments } from '@/functions';
 import ConfigMapDeploymentList from './deploymentItem';
 
 const ConfigMapDeployments = (props: any) => {
-  const { deployments, type } = props;
+  const { deployments, type, updateDataWithIndex } = props;
   const deploymentList: any[] = filterDeployments(deployments);
 
   return (
@@ -13,7 +13,7 @@ const ConfigMapDeployments = (props: any) => {
       <table className="w-full table-auto border-collapse border border-gray-300 mt-2">
         <tbody>
           {deploymentList.map((deployment: any, index: number) => (
-            <ConfigMapDeploymentList key={index} index={index} deployment={deployment} />
+            <ConfigMapDeploymentList key={index} index={index} deployment={deployment} updateDataWithIndex={updateDataWithIndex}/>
           ))}
         </tbody>
       </table>

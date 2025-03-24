@@ -9,10 +9,10 @@ import { Deployment } from "@/types";
 import { saveDeploymentsData, getDeploymentsData } from "@/functions/localstorage";
 
 const DeploymentTab = (props: any) => {
-  const { workLoadOne, workLoadTwo, loading } = props;
+  const { workLoadOne, workLoadTwo, loading,activeTab } = props;
   const [deployments, setData] = useState<Deployment[] | null>(null);
   const [deploymentsDiff, setDataDiff] = useState<any | null>(null);
-
+  const [error, setError]  = useState("");
   const getDeployments = async (props: any) => {
     let queryString = [
       props.workLoadOne ? `workload1=${props.workLoadOne}` : '',
@@ -27,8 +27,8 @@ const DeploymentTab = (props: any) => {
       if (response && response.data && response.data.length > 0) {
         props.closeLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching deployments:', error);
+    } catch (error:any) {
+      setError(error.message);
       props.closeLoading(false);
     }
 
@@ -40,7 +40,7 @@ const DeploymentTab = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (workLoadOne || workLoadTwo) {
+    if (workLoadOne || workLoadTwo && activeTab =="Deployment") {
       getDeployments(props);
     }
 
@@ -50,7 +50,10 @@ const DeploymentTab = (props: any) => {
   if (loading && !deployments) return <div className="text-red-500">Error loading data</div>;
 
   return (
-    <div className="flex flex-row p-2 gap-8">
+    <div>
+      <div className="block w-100 p-2 gap-8">{error ? error : ""}</div>
+      <div className="flex flex-row p-2 gap-8">
+      
       {!workLoadOne && !workLoadTwo && !deployments ?
         <div className="text-red-500 p-2 gap-2">Please select at least one workloads</div> : ""}
       {
@@ -74,6 +77,8 @@ const DeploymentTab = (props: any) => {
         ))
       }
     </div>
+    </div>
+   
   );
 }
 
