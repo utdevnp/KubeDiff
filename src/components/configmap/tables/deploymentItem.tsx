@@ -19,7 +19,7 @@ const ConfigMapDeploymentList = ({ deployment, index, updateDataWithIndex }: { d
                             <tbody>
                             {
                                 deployment && configMapArray.map((item: any, index: number) => {
-                                     return<tr  className="border-b-gray-50"><td>{index+1}</td> <td>{item[0]} </td><td>{item[1]}</td></tr>
+                                     return (<tr className="border-b-gray-50"><td>{index+1}</td> <td>{item[0]} </td><td>{item[1]}</td></tr>)
                                 })
                             } 
                             </tbody>

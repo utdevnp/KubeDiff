@@ -94,3 +94,14 @@ export const findDifferentNamesInList = (list: any[]) => {
     return keyVaults.find((item: { value: any; }) => item.value == workload)?.name;
   }
 
+
+  export const getConfigMapDifferenceCount = (deployments: any) => {
+    let totalConfigMapKeys = 0;
+
+    deployments.forEach(deployment => {
+      totalConfigMapKeys += deployment.configMaps ? Object.keys(deployment.configMaps).length : 0;
+    });
+
+    return totalConfigMapKeys;
+  }
+

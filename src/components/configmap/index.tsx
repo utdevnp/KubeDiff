@@ -9,6 +9,7 @@ const ConfigMapTab = (props: any) => {
     const { workLoadOne, workLoadTwo, loading, activeTab } = props;
     const [configMapData, setConfigMapData] = useState<any>([]);
     const [error, setError] = useState("");
+    const [isMatch, setIsMatch] = useState(true);
     const getDeployments = async (props: any) => {
         let queryString = [
             props.workLoadOne ? `workload1=${props.workLoadOne}` : '',
@@ -35,6 +36,7 @@ const ConfigMapTab = (props: any) => {
         for (let i = 0; i < confData.length; i++) {
             if (isOpenFlag) {
                 confData[i][index].isConfigMapOpen = value
+                confData[i][index].isConfigMapOther = Object.entries(confData[i][index].configMaps)
             } else {
                 confData[i][index].setCurrentView = value
             }
@@ -48,6 +50,9 @@ const ConfigMapTab = (props: any) => {
         getConfigFromLocal();
     }
 
+    const countMaps = (count) => {
+        setIsMatch(count + count === count * 2);
+    }
     const getConfigFromLocal = () => {
         setConfigMapData(getConfigData());
     }
@@ -67,9 +72,10 @@ const ConfigMapTab = (props: any) => {
             <div> {error ? error : ""}</div>
             <div className="flex flex-row p-2 gap-8">
                 {
+                    
                     configMapData?.map((deployment: any, index: number) => (
-
                         <div key={index} className="flex flex-col gap-2">
+                            
                             <h3 className="font-bold flex-row text-l p-2">
                                 {`${index + 1}.`} <span className="text-blue-500">
                                     {index == 0 ? findName(workLoadOne || workLoadTwo) : findName(workLoadTwo)} </span>
@@ -77,7 +83,7 @@ const ConfigMapTab = (props: any) => {
                                 &nbsp; <small className="text-xs font-light text-green-500">{loading ? "Loading..." : ""}</small>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <CountTable deployments={deployment} />
+                                <CountTable deployments={deployment} configMapData={configMapData} index={index} countMaps={countMaps} isMatch={isMatch}/>
                                 <ConfigMapDeployments deployments={deployment} updateDataWithIndex={updateDataWithIndex} title="Services" />
                             </div>
                         </div>
