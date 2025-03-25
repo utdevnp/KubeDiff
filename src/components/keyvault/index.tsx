@@ -20,8 +20,10 @@ const KeyVaultTab = (props: any) => {
     ].filter(Boolean).join('&');
     try {
       const response = await httpRequest.get(`/api/keyvault?${queryString}`);
-      setData(response.data);
-      saveKvData(response.data);
+      if (response?.data?.length) {
+        setData(response.data);
+        saveKvData(response.data);
+      }
     } catch (error: any) {
       setError(error.message);
       props.closeLoading(false);
@@ -34,7 +36,7 @@ const KeyVaultTab = (props: any) => {
   }
   const getFromLc = () => {
     const kvData = getKvData();
-    const getKeys = kvData[0];
+    const getKeys = kvData && kvData.length ? kvData[0] : "";
     setKvKeys(Object.keys(getKeys).map((item) => item));
     setData(kvData);
   }

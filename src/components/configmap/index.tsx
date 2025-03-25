@@ -16,13 +16,11 @@ const ConfigMapTab = (props: any) => {
         ].filter(Boolean).join('&');
         try {
             const response = await httpRequest.get(`/api/deploy?${queryString}&loadConfig=true`);
-            if (response && response.data.length) {
-                saveConfigData(response.data);
-                setConfigMapData(response.data);
-            }
 
             if (response && response.data && response.data.length > 0) {
                 props.closeLoading(false);
+                saveConfigData(response.data);
+                setConfigMapData(response.data);
             }
         } catch (error: any) {
             setError(error.message);
@@ -42,7 +40,11 @@ const ConfigMapTab = (props: any) => {
             }
         }
 
-        saveConfigData(confData);
+        const sortedDeployments = confData.map(group => 
+            group.sort((a, b) => (a?.name ?? null).localeCompare(b?.name ?? null))
+        );
+          
+        saveConfigData(sortedDeployments);
         getConfigFromLocal();
     }
 
@@ -64,24 +66,26 @@ const ConfigMapTab = (props: any) => {
         <div>
             <div> {error ? error : ""}</div>
             <div className="flex flex-row p-2 gap-8">
-            {
-                configMapData?.map((deployment: any, index: number) => (
+                {
+                    configMapData?.map((deployment: any, index: number) => (
 
-                    <div key={index} className="flex flex-col gap-2">
-                        <h3 className="font-bold flex-row text-l p-2">
-                            {`${index + 1}.`} <span className="text-blue-500"> {index == 0 ? findName(workLoadOne || workLoadTwo) : findName(workLoadTwo)} </span> <small className="text-sm">({index == 0 ? workLoadOne || workLoadTwo : workLoadTwo})</small>
-                            &nbsp; <small className="text-xs font-light text-green-500">{loading ? "Loading..." : ""}</small>
-                        </h3>
-                        <div className="flex flex-col gap-2">
-                            <CountTable deployments={deployment} />
-                            <ConfigMapDeployments deployments={deployment} updateDataWithIndex={updateDataWithIndex} title="Services" />
+                        <div key={index} className="flex flex-col gap-2">
+                            <h3 className="font-bold flex-row text-l p-2">
+                                {`${index + 1}.`} <span className="text-blue-500">
+                                    {index == 0 ? findName(workLoadOne || workLoadTwo) : findName(workLoadTwo)} </span>
+                                <small className="text-sm">({index == 0 ? workLoadOne || workLoadTwo : workLoadTwo})</small>
+                                &nbsp; <small className="text-xs font-light text-green-500">{loading ? "Loading..." : ""}</small>
+                            </h3>
+                            <div className="flex flex-col gap-2">
+                                <CountTable deployments={deployment} />
+                                <ConfigMapDeployments deployments={deployment} updateDataWithIndex={updateDataWithIndex} title="Services" />
+                            </div>
                         </div>
-                    </div>
-                ))
-            }
+                    ))
+                }
+            </div>
         </div>
-        </div>
-       
+
     );
 };
 

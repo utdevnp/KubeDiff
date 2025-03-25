@@ -10,12 +10,12 @@ export const getDeploymentsData = () => {
 }
 
 export const saveConfigData = (deployments: Deployment[]) => {
-    localStorage.setItem('configMap', JSON.stringify(deployments));
+    localStorage.setItem('configMap', btoa(JSON.stringify(deployments)));
 }
 
 export const getConfigData = () => {
     const deployments = localStorage.getItem('configMap');
-    return deployments ? JSON.parse(deployments) : [];
+    return deployments ? JSON.parse(atob(deployments)) : [];
 }
 
 export const saveKvData = (kv: any) => {

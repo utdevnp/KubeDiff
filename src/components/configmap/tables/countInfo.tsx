@@ -2,8 +2,8 @@ import { deploymentHavingIssue, filterDeployments } from '@/functions';
 import React from 'react';
 
 const CountTable = (props: any) => {
-  const allServices = filterDeployments(props.deployments);
-  const deploymentHavingIssues = deploymentHavingIssue(allServices);
+  const allServices = props.deployments? filterDeployments(props.deployments) : [];
+  const deploymentHavingIssues = allServices.length ? deploymentHavingIssue(allServices): []
   
   return (
     <div className="overflow-x-auto">
